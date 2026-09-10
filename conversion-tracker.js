@@ -32,6 +32,12 @@ section.innerHTML=`
       <div><label for="conversion-sales">Total sales</label><input id="conversion-sales" type="number" min="0" step="1" inputmode="numeric" value="0" aria-describedby="conversion-error"></div>
       <p id="conversion-error" class="conversion-error" role="status"></p>
     </form>
+    <div class="conversion-report-body">
+      <label for="conversion-report">Your update</label>
+      <textarea id="conversion-report" rows="4" readonly spellcheck="false" aria-describedby="conversion-report-help"></textarea>
+      <div class="conversion-report-actions"><button type="button" id="copy-conversion-report">Copy update</button><span id="conversion-copy-status" role="status"></span></div>
+      <p id="conversion-report-help">UK time · updates every two hours.</p>
+    </div>
     <p class="conversion-storage" id="conversion-storage">Totals are saved in this browser only. Replace them when you start a new period.</p>
   </div>
   <div class="conversion-result-card" aria-live="polite" aria-atomic="true">
@@ -42,15 +48,7 @@ section.innerHTML=`
     <p class="conversion-explanation" id="conversion-explanation">Your rate updates as you type.</p>
   </div>
 </div>
-<div class="conversion-report-card">
-  <div class="panel-heading"><span class="step-number">02</span><div><h2>Your copyable update</h2><p>UK time · latest two-hour slot. Totals stay as entered.</p></div></div>
-  <div class="conversion-report-body">
-    <label for="conversion-report">Update preview</label>
-    <textarea id="conversion-report" rows="4" readonly spellcheck="false" aria-describedby="conversion-report-help"></textarea>
-    <div class="conversion-report-actions"><button type="button" id="copy-conversion-report">Copy update</button><span id="conversion-copy-status" role="status"></span></div>
-    <p id="conversion-report-help">The time changes automatically: @2pm, @4pm, @6pm… Your numbers update when you edit the totals.</p>
-  </div>
-</div>`;
+`;
 main.append(section);
 const chats=section.querySelector('#conversion-chats'),sales=section.querySelector('#conversion-sales'),error=section.querySelector('#conversion-error'),rate=section.querySelector('#conversion-rate'),summary=section.querySelector('#conversion-summary'),explanation=section.querySelector('#conversion-explanation'),storage=section.querySelector('#conversion-storage');
 try{const saved=JSON.parse(localStorage.getItem(key)||'null');if(saved&&Number.isSafeInteger(saved.chats)&&saved.chats>=0&&Number.isSafeInteger(saved.sales)&&saved.sales>=0){chats.value=saved.chats;sales.value=saved.sales;}}catch{storage.textContent='Browser saving is unavailable. Totals will last for this page session.';}
