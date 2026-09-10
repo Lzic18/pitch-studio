@@ -1,0 +1,19 @@
+
+.conversion-tracker[hidden]{display:none!important}
+.conversion-tracker{--tracker-card:#fff;--tracker-subtle:#fafafb;--tracker-border:#e1e4e9;--tracker-muted:#69717f;--tracker-accent:#c60000;padding-bottom:24px}
+.conversion-intro{margin:0;color:var(--tracker-muted);font-size:16px}
+.conversion-grid{display:grid;grid-template-columns:minmax(260px,1fr) minmax(280px,1fr);gap:24px;align-items:start;max-width:1120px}
+.conversion-input-card,.conversion-result-card{background:var(--tracker-card);border:1px solid var(--tracker-border);border-radius:16px;overflow:hidden}
+#conversion-form{padding:26px;display:grid;grid-template-columns:1fr 1fr;gap:24px 18px}
+#conversion-form input{font-size:24px;font-weight:600;font-variant-numeric:tabular-nums;padding:16px;width:100%}
+.conversion-error{grid-column:1/-1;color:var(--tracker-accent);font-size:14px;margin:0;min-height:21px}
+.conversion-storage{border-top:1px solid var(--tracker-border);background:var(--tracker-subtle);color:var(--tracker-muted);font-size:13px;line-height:1.6;padding:18px 26px;margin:0}
+.conversion-result-card{padding:30px;border-top:3px solid #e60000}
+.conversion-result-label{color:var(--tracker-muted);font-size:12px;letter-spacing:1.4px;font-weight:650;margin:0 0 18px}
+.conversion-value{font-size:clamp(32px,4.4vw,64px);line-height:1.2;font-weight:750;letter-spacing:-1.5px;color:var(--tracker-accent);font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.conversion-summary{font-size:18px;margin:18px 0 26px}
+.conversion-formula{border-top:1px solid var(--tracker-border);padding-top:20px;font-size:15px;font-weight:600}
+.conversion-explanation{font-size:14px;color:var(--tracker-muted);line-height:1.6;margin:8px 0 0}
+html[data-theme="dark"] .conversion-tracker{--tracker-card:#1a1f28;--tracker-subtle:#171c24;--tracker-border:#333b48;--tracker-muted:#aab5c6;--tracker-accent:#ff9999}
+@media(max-width:950px){.conversion-grid{grid-template-columns:1fr}.conversion-value{font-size:52px}}
+@media(max-width:420px){#conversion-form{grid-template-columns:1fr;padding:22px}.conversion-result-card{padding:24px}.conversion-value{font-size:44px}}
