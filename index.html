@@ -1,0 +1,1256 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vodafone Pitch Studio</title><meta name="description" content="Your workspace for Vodafone sales pitches, guided conversations and support resources.">
+    <style>
+        :root {
+            --bg-color: #121212;
+            --text-color: #ffffff;
+            --accent-color: #e60000;
+            --border-color: #333;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Add to existing CSS in index.html */
+
+
+        #welcome-content {
+            display: block;
+        }
+
+        #template-content {
+            display: none;
+        }
+
+        .knowledge-base-section {
+            display: none;
+        }
+
+        .sidebar {
+            width: 250px;
+            padding: 1rem;
+            background-color: #1e1e1e;
+            border-right: 1px solid var(--border-color);
+            overflow-y: auto;
+        }
+
+        /* Enhanced Issue Detail Modal */
+        .issue-detail-content {
+            max-width: 800px;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .issue-detail-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0 1.5rem;
+        }
+
+        .issue-meta {
+            background: #252525;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid #333;
+            margin-top: 20px;
+        }
+
+        .issue-description-section h4,
+        .issue-tags-section h4,
+        .solutions-section h4,
+        .add-solution-section h4 {
+            color: #fff;
+            margin-bottom: 0.75rem;
+            font-size: 1.1rem;
+            border-bottom: 1px solid #333;
+            padding-bottom: 0.5rem;
+            margin-top: 0px;
+            padding-top: 0px;
+        }
+
+        .issue-description-section p {
+            color: #ccc;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        .issue-tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .issue-tags-container .tag {
+            background: linear-gradient(135deg, #666, #555);
+            color: #fff;
+            padding: 0.4rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            border: 1px solid #444;
+        }
+
+        /* Solutions Section */
+        .solutions-section {
+            margin-bottom: 2rem;
+        }
+
+        .solutions-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .solutions-count {
+            background: var(--accent-color);
+            color: white;
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: normal;
+        }
+
+        .solutions-sort {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .solutions-sort label {
+            color: #aaa;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        .sort-select {
+            background: #2a2a2a;
+            color: #fff;
+            border: 1px solid #444;
+            border-radius: 4px;
+            padding: 0.4rem 0.75rem;
+            font-size: 0.85rem;
+        }
+
+        /* Solutions List */
+        .solutions-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .solution-card {
+            background: #2a2a2a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 1.25rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .solution-card:hover {
+            border-color: #444;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .solution-card.high-voted {
+            border-left: 4px solid var(--accent-color);
+            background: linear-gradient(135deg, #2a2a2a, #252525);
+        }
+
+        .solution-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .solution-content {
+            color: #e0e0e0;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            white-space: pre-wrap;
+        }
+
+        .solution-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            border-top: 1px solid #333;
+        }
+
+        .solution-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .solution-form .solution-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 0;
+            padding-top: 0;
+            border-top: none;
+        }
+
+
+
+        .solution-meta {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: #888;
+            font-size: 0.85rem;
+        }
+
+        .solution-date {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .solution-date::before {
+            content: "🕒";
+            font-size: 0.8rem;
+        }
+
+        .upvote-section {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .upvote-btn {
+            background: linear-gradient(135deg, #333, #444);
+            border: 1px solid #555;
+            color: #fff;
+            padding: 0.6rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .upvote-btn:hover {
+            background: linear-gradient(135deg, #444, #555);
+            border-color: #666;
+            transform: translateY(-1px);
+        }
+
+        .upvote-btn.voted {
+            background: linear-gradient(135deg, var(--accent-color), #ff3333);
+            border-color: #ff6666;
+        }
+
+        .upvote-count {
+            font-size: 1.1rem;
+            font-weight: bold;
+            min-width: 20px;
+            text-align: center;
+        }
+
+        .upvote-icon {
+            font-size: 1rem;
+        }
+
+        /* No Solutions State */
+        .no-solutions {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: #252525;
+            border-radius: 8px;
+            border: 2px dashed #333;
+        }
+
+        .no-solutions-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .no-solutions h5 {
+            color: #fff;
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .no-solutions p {
+            color: #888;
+            margin: 0;
+        }
+
+        /* Add Solution Section */
+        .add-solution-section {
+            background: #252525;
+            border-radius: 8px;
+            padding: 1.5rem;
+            border: 1px solid #333;
+            margin-bottom: 1.5rem;
+        }
+
+        .solution-textarea {
+            width: 93%;
+            padding: 1rem;
+            background: #2a2a2a;
+            color: #fff;
+            border: 1px solid #444;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            resize: vertical;
+            min-height: 120px;
+            margin-bottom: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .solution-textarea:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 2px rgba(230, 0, 0, 0.2);
+        }
+
+        .solution-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn-primary .btn-icon {
+            margin-right: 0.5rem;
+        }
+
+        .solution-tips {
+            color: #888;
+            font-size: 0.8rem;
+        }
+
+        /* Modal Footer */
+        .modal-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid #333;
+            display: flex;
+            justify-content: flex-end;
+            background: #252525;
+            border-radius: 0 0 8px 8px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .solutions-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .solution-actions {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+
+            .solution-footer {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+
+            .solution-meta {
+                flex-wrap: wrap;
+            }
+        }
+
+        /* Animation for new solutions */
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .solution-card.new-solution {
+            animation: slideInUp 0.5s ease-out;
+        }
+
+        /* Ensure template links are styled properly */
+        .sidebar a {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+            text-decoration: none;
+            padding: 0.5rem;
+            border-radius: 4px;
+        }
+
+        .sidebar a:hover {
+            background-color: #2a2a2a;
+        }
+
+        #knowledge-base-link {
+            background-color: #333 !important;
+            margin-top: auto;
+        }
+
+
+        .sidebar-bottom {
+            margin-top: auto;
+            padding-top: 2rem;
+            padding: 0;
+            margin: 0;
+        }
+
+        .template-content {
+            display: block;
+        }
+
+        .knowledge-base-section {
+            display: none;
+        }
+
+        .knowledge-base-section {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+        }
+
+        .kb-controls {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            align-items: center;
+        }
+
+        .issues-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .issue-card {
+            background-color: #2a2a2a;
+            border: 1px solid var(--border-color);
+            padding: 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .issue-card:hover {
+            background-color: #333;
+        }
+
+        .issue-tags {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            background-color: #444;
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+        }
+
+        .solution-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .upvote-btn {
+            background: none;
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 0.25rem 0.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .upvote-btn:hover {
+            background-color: #333;
+        }
+
+        .upvote-count {
+            margin-left: 0.5rem;
+            font-weight: bold;
+        }
+
+        /* Enhanced Modal Styles */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(2px);
+        }
+
+        .modal-content {
+            background-color: #1e1e1e;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 1px solid #333;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            animation: modalSlideIn 0.3s ease-out;
+            padding: 5px;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 1.5rem 1rem;
+            border-bottom: 1px solid #333;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            color: #fff;
+            font-size: 1.4rem;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: #aaa;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .close-btn:hover {
+            background-color: #333;
+            color: #fff;
+        }
+
+        .modal-form .form-actions {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #333;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #fff;
+            margin-top: 5px;
+        }
+
+        .form-input,
+        .form-textarea {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: #2a2a2a;
+            color: var(--text-color);
+            border: 1px solid #444;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-family: inherit;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .form-input:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 2px rgba(230, 0, 0, 0.2);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        /* Tags Section */
+        .tags-section {
+            background-color: #252525;
+            padding: 1rem;
+            border-radius: 6px;
+            border: 1px solid #333;
+        }
+
+        .tags-instruction {
+            font-size: 0.85rem;
+            color: #aaa;
+            margin-bottom: 1rem;
+        }
+
+        .existing-tags-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .tag-bubble {
+            background-color: #444;
+            color: #fff;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        .tag-bubble:hover {
+            background-color: #555;
+            transform: translateY(-1px);
+        }
+
+        .tag-bubble.selected {
+            background: linear-gradient(135deg, var(--accent-color), #ff3333);
+            border-color: #ff6666;
+            transform: scale(1.05);
+        }
+
+        .tag-bubble.selected:hover {
+            background: linear-gradient(135deg, #ff1a1a, #ff3333);
+        }
+
+        .existing-tags-bubbles {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            padding: 0.5rem;
+            background-color: #2a2a2a;
+            border-radius: 6px;
+            min-height: 50px;
+        }
+
+        .tag-selector {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+
+        .tag-selector:hover {
+            background-color: #333;
+        }
+
+        .tag-selector input[type="checkbox"] {
+            margin: 0;
+        }
+
+        .tag-selector label {
+            margin: 0;
+            font-weight: normal;
+            cursor: pointer;
+        }
+
+        .new-tag-creator {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            align-items: center;
+        }
+
+        .tag-input {
+            flex: 1;
+            padding: 0.75rem;
+            background-color: #2a2a2a;
+            color: var(--text-color);
+            border: 1px solid #444;
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+
+        .tag-add-btn {
+            background-color: #444;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            white-space: nowrap;
+            transition: background-color 0.2s;
+        }
+
+        .tag-add-btn:hover {
+            background-color: #555;
+        }
+
+        .selected-tags-section {
+            margin-top: 1rem;
+        }
+
+        .selected-tags-label {
+            font-size: 0.9rem;
+            color: #fff;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .selected-tags-bubbles {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            min-height: 50px;
+            padding: 0.75rem;
+            background-color: #2a2a2a;
+            border-radius: 6px;
+            border: 1px dashed #444;
+            transition: all 0.2s ease;
+        }
+
+        .selected-tags-bubbles:empty::before {
+            content: "No tags selected - click tags above to select";
+            color: #666;
+            font-style: italic;
+            font-size: 0.85rem;
+        }
+
+        .selected-tag-bubble {
+            background: linear-gradient(135deg, var(--accent-color), #ff3333);
+            color: white;
+            padding: 0.6rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            animation: bubbleAppear 0.3s ease-out;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        @keyframes bubbleAppear {
+            from {
+                opacity: 0;
+                transform: scale(0.8) translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .remove-tag-bubble {
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.2);
+            transition: all 0.2s ease;
+            line-height: 1;
+        }
+
+        .remove-tag-bubble:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+
+        .selected-tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            min-height: 40px;
+            padding: 0.5rem;
+            background-color: #2a2a2a;
+            border-radius: 4px;
+            border: 1px dashed #444;
+        }
+
+        .selected-tag {
+            background: linear-gradient(135deg, var(--accent-color), #ff3333);
+            color: white;
+            padding: 0.4rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            animation: tagAppear 0.2s ease-out;
+        }
+
+        @keyframes tagAppear {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .remove-tag {
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.2);
+            transition: background-color 0.2s;
+        }
+
+        .remove-tag:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+
+
+
+        .btn-primary {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        .btn-primary:hover {
+            background-color: #ff1a1a;
+            transform: translateY(-1px);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background-color: #444;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.2s;
+        }
+
+        .btn-secondary:hover {
+            background-color: #555;
+        }
+
+        /* Empty state for selected tags */
+        .selected-tags-container:empty::before {
+            content: "No tags selected";
+            color: #666;
+            font-style: italic;
+        }
+
+
+        .main-content {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        h2 {
+            margin-top: 0;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 0.5rem;
+            background-color: #2a2a2a;
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            margin-bottom: 1rem;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            font-size: 1rem;
+            align-self: flex-start;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        .preview {
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: #2a2a2a;
+            border: 1px solid var(--border-color);
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .sidebar a {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+            text-decoration: none;
+            padding: 0.5rem;
+            border-radius: 4px;
+        }
+
+        .sidebar a:hover {
+            background-color: #2a2a2a;
+        }
+
+        .field-description {
+            font-size: 0.8rem;
+            color: #aaa;
+            margin-top: -0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .pitch-card-container {
+            display: flex;
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+
+        .pitch-card-form {
+            flex: 1;
+        }
+
+        .pitch-card-preview {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            background-color: #f5f5f5;
+            padding: 1rem;
+            border-radius: 8px;
+            min-height: 400px;
+        }
+
+        .pitch-card {
+            width: 200px;
+            line-height: 1.3;
+            margin: 0 auto;
+            padding: 10px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            font-family: 'Segoe UI', Arial, sans-serif;
+            border: 1px solid #f0f0f0;
+        }
+
+        /* ── Branching pitch engine ───────────────────────────────────── */
+        .branch-breadcrumb {
+            font-size: 0.85rem;
+            color: #aaa;
+            margin-bottom: 1rem;
+        }
+
+        .branch-fields {
+            margin-bottom: 0.5rem;
+        }
+
+        .branch-preview {
+            margin-top: 0.5rem;
+            padding: 1rem;
+            background-color: #2a2a2a;
+            border: 1px solid var(--border-color);
+            white-space: pre-wrap;
+            max-height: 320px;
+            overflow-y: auto;
+            border-radius: 4px;
+        }
+
+        .branch-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .branch-secondary-btn {
+            background-color: #2a2a2a;
+            border: 1px solid var(--border-color);
+        }
+
+        .branch-options {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1.25rem;
+            flex-wrap: wrap;
+        }
+
+        .branch-option-btn {
+            padding: 0.6rem 1.5rem;
+            font-weight: bold;
+            border-radius: 4px;
+        }
+
+        .branch-option-yes {
+            background-color: #1e8e3e;
+        }
+
+        .branch-option-no {
+            background-color: #555;
+        }
+
+        .branch-end-label {
+            font-style: italic;
+            color: #888;
+            padding: 0.5rem 0;
+        }
+    </style>
+<link rel="stylesheet" href="studio.css"></head>
+
+<body>
+    <div class="sidebar">
+        <div class="brand"><span class="brand-mark">P.</span><div>Pitch Studio<small>VODAFONE WORKSPACE</small></div></div><p class="nav-label">YOUR PLAYBOOK</p>
+        <!-- Templates will be injected here -->
+
+        <!-- Knowledge Base link at the bottom -->
+        <div class="sidebar-bottom">
+            <a href="#" id="knowledge-base-link"
+                style="background-color: #333; padding: 0.75rem; border-radius: 4px; display: block;">
+                📚 Knowledge Base
+            </a>
+        </div>
+    </div>
+
+    <!-- Update the main content structure -->
+    <div class="main-content">
+        <header class="workspace-header"><span>Sales workspace <span class="slash">/</span> Pitch builder</span><span class="workspace-badge">Personal workspace</span></header>
+        <div id="welcome-content" hidden></div>
+        <div id="template-content" style="display:none">
+          <div class="title-block"><p class="eyebrow">MAKE EVERY CONVERSATION COUNT</p><h1 id="template-title"></h1><p id="template-description"></p><p id="template-desc" hidden></p></div>
+          <div class="builder-grid"><section class="input-panel"><div class="panel-heading"><span class="step-number">01</span><div><h2>Build your pitch</h2><p>Fill in the details for this customer.</p></div></div><form id="pitch-form" autocomplete="off"></form></section>
+          <section class="output-panel"><div class="panel-heading"><span class="step-number">02</span><div><h2>Ready for your chat</h2><p>Your message updates as you type.</p></div></div><div class="message-label">MESSAGE PREVIEW</div><div class="preview" id="preview" aria-live="polite"></div><div class="copy-footer"><button id="copy-button">Copy pitch <span aria-hidden="true">↗</span></button><span id="copy-status" role="status">Review, copy, send.</span></div><p class="source-note">Original pitch wording retained. Check current offers and terms before sending.</p></section></div>
+        </div>
+        <!-- Branching Pitch Content (hidden by default) -->
+        <div id="branch-content" style="display: none;"></div>
+
+        <!-- Knowledge Base Content (hidden by default) -->
+        <div id="knowledge-base-section" class="knowledge-base-section" style="display: none;">
+            <h2>Knowledge Base</h2>
+
+            <div class="kb-controls">
+                <input type="text" id="kb-search" placeholder="Search issues..." style="width: 300px; padding: 0.5rem;">
+                <button id="new-issue-btn">Raise New Issue</button>
+            </div>
+
+            <div id="issues-list" class="issues-list">
+                <!-- Issues will be populated here -->
+            </div>
+
+            <!-- New Issue Modal -->
+            <!-- Updated New Issue Modal with Submit Button Inside Form -->
+            <div id="new-issue-modal" class="modal" style="display: none;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>Raise New Issue</h3>
+                        <button type="button" id="close-modal-btn" class="close-btn">&times;</button>
+                    </div>
+
+                    <form id="new-issue-form" class="modal-form">
+                        <div class="form-group">
+                            <label for="issue-name" class="form-label">Issue Title *</label>
+                            <input type="text" id="issue-name" class="form-input"
+                                placeholder="Brief description of the issue" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="issue-description" class="form-label">Description *</label>
+                            <textarea id="issue-description" class="form-textarea" rows="4"
+                                placeholder="Detailed description of the issue..." required></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Tags</label>
+                            <div class="tags-section">
+                                <div class="tags-instruction">Click to select existing tags or create new ones:</div>
+
+                                <div id="existing-tags" class="existing-tags-bubbles">
+                                    <!-- Existing tags will be populated here as bubbles -->
+                                </div>
+
+                                <div class="new-tag-creator">
+                                    <input type="text" id="new-tag-input" class="tag-input"
+                                        placeholder="Enter new tag name...">
+                                    <button type="button" id="add-tag-btn" class="tag-add-btn">Add Tag</button>
+                                </div>
+
+                                <div class="selected-tags-section">
+                                    <div class="selected-tags-label">Selected Tags:</div>
+                                    <div id="selected-tags" class="selected-tags-bubbles">
+                                        <!-- Selected tags will appear here -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- MOVED: Form actions now inside the form -->
+                        <div class="form-actions">
+                            <button style="margin-left: 30%;" type="submit" class="btn-primary">Submit Issue</button>
+                            <button type="button" id="cancel-issue-btn" class="btn-secondary">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Issue Detail Modal -->
+        <!-- Issue Detail Modal - Updated Solutions Section -->
+        <!-- Issue Detail Modal - Updated Solutions Section -->
+        <div id="issue-detail-modal" class="modal" style="display: none;">
+            <div class="modal-content issue-detail-content">
+                <div class="modal-header">
+                    <h3 id="issue-detail-title"></h3>
+                    <button class="close-btn">&times;</button>
+                </div>
+
+                <div class="issue-detail-body">
+                    <div class="issue-meta">
+                        <div class="issue-description-section">
+                            <h4>Description</h4>
+                            <p id="issue-detail-description"></p>
+                        </div>
+
+                        <div class="issue-tags-section">
+                            <h4>Tags</h4>
+                            <div id="issue-detail-tags" class="issue-tags-container"></div>
+                        </div>
+                    </div>
+
+                    <div class="solutions-section">
+                        <div class="solutions-header">
+                            <h4>
+                                Solutions
+                                <span id="solutions-count" class="solutions-count">(0)</span>
+                            </h4>
+                            <div class="solutions-sort">
+                                <label>Sort by:</label>
+                                <select id="solutions-sort-select" class="sort-select">
+                                    <option value="upvotes">Most Upvoted</option>
+                                    <option value="newest">Newest First</option>
+                                    <option value="oldest">Oldest First</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div id="solutions-list" class="solutions-list">
+                            <!-- Solutions will be populated here -->
+                        </div>
+
+                        <div class="no-solutions" id="no-solutions" style="display: none;">
+                            <div class="no-solutions-icon">💡</div>
+                            <h5>No Solutions Yet</h5>
+                            <p>Be the first to share a solution for this issue!</p>
+                        </div>
+                    </div>
+
+                    <div class="add-solution-section">
+                        <h4>Add Your Solution</h4>
+                        <!-- Wrap solution input in a form for better structure -->
+                        <div class="solution-form">
+                            <textarea id="new-solution-text" class="solution-textarea"
+                                placeholder="Share your solution or workaround for this issue..." rows="4"></textarea>
+                            <div class="solution-actions">
+                                <button id="submit-solution-btn" class="btn-primary">
+                                    <span class="btn-icon">💡</span>
+                                    Submit Solution
+                                </button>
+                                <div class="solution-tips">
+                                    <small>💡 Tips: Be specific and include steps if possible</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button id="close-issue-detail-btn" class="btn-secondary">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+
+    <script src="knowledge-base.js"></script>
+    <script src="branch-pitches.js"></script>
+    <script src="branch-engine.js"></script>
+    <script src="scripts.js"></script><script src="studio.js"></script>
+</body>
+
+</html>
