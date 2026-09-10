@@ -81,14 +81,21 @@ Should we get this ordered for you?
     },
     {
         name: 'Broadband Pitch',
-        description: 'HBB Plans',
+        description: 'Full Fibre plans — enter a monthly price for each speed.',
         fields: [
-            { id: 'custAddress', type: 'text', label: 'Address' },
-            { id: 'hbbCost', type: 'text', label: 'Price(£)' },
-            { id: 'hbbSpeed', type: 'text', label: 'Speed(mbps)' },
-
+            { id: 'hbb150Price', type: 'text', label: 'Full Fibre 150Mbps — monthly price (£)' },
+            { id: 'hbb500Price', type: 'text', label: 'Full Fibre 500Mbps — monthly price (£)' },
+            { id: 'hbb910Price', type: 'text', label: 'Full Fibre 910Mbps — monthly price (£)' }
         ],
-        baseText: `I can see you don't have vodafone broadband on the account, I just want to make you aware as you have a mobile you have exclusive discounts on broadband. We offer broadband at your address, [custAddress] and I can do £[hbbCost] for [hbbSpeed]mbps. Would you like to know more information around this after we complete your initial query?`
+        baseText: `Amazing news! I’ve checked your address and you’re eligible for our lightning-fast Full Fibre broadband. Here are the exclusive options I can offer you today:
+
+Full Fibre 150Mbps — perfect for everyday browsing, streaming & working from home — just £[hbb150Price] per month
+
+Full Fibre 500Mbps — ideal for busy households, gaming & multiple devices connected at once — just £[hbb500Price] per month
+
+Full Fibre 910Mbps — our ultimate speeds for seamless 4K streaming, gaming & the best overall experience — just £[hbb910Price] per month
+
+Which package sounds like the best fit for your home today?`
     },
     {
         name: 'Watch Pitch(Evo)',
