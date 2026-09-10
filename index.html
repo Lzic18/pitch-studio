@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8" />
+    <script src="theme.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vodafone Pitch Studio</title><meta name="description" content="Your workspace for Vodafone sales pitches, guided conversations and support resources.">
     <style>
@@ -1072,7 +1073,7 @@
             padding: 0.5rem 0;
         }
     </style>
-<link rel="stylesheet" href="studio.css"></head>
+<link rel="stylesheet" href="studio.css?v=dark-mode-1"></head>
 
 <body>
     <div class="sidebar">
@@ -1090,7 +1091,7 @@
 
     <!-- Update the main content structure -->
     <div class="main-content">
-        <header class="workspace-header"><span>Sales workspace <span class="slash">/</span> Pitch builder</span><span class="workspace-badge">Personal workspace</span></header>
+        <header class="workspace-header"><span>Sales workspace <span class="slash">/</span> Pitch builder</span><div class="workspace-actions"><span class="workspace-badge">Personal workspace</span><button id="theme-toggle" class="theme-toggle" type="button" role="switch" aria-checked="false"><span>Dark mode</span><span class="theme-track" aria-hidden="true"><span class="theme-thumb"></span></span></button></div></header>
         <div id="welcome-content" hidden></div>
         <div id="template-content" style="display:none">
           <div class="title-block"><p class="eyebrow">MAKE EVERY CONVERSATION COUNT</p><h1 id="template-title"></h1><p id="template-description"></p><p id="template-desc" hidden></p></div>
