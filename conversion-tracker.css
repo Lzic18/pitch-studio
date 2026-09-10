@@ -18,11 +18,15 @@ html[data-theme="dark"] .conversion-tracker{--tracker-card:#1a1f28;--tracker-sub
 @media(max-width:950px){.conversion-grid{grid-template-columns:1fr}.conversion-value{font-size:52px}}
 @media(max-width:420px){#conversion-form{grid-template-columns:1fr;padding:22px}.conversion-result-card{padding:24px}.conversion-value{font-size:44px}}
 
-.conversion-report-card{margin-top:24px;max-width:1120px;background:var(--tracker-card);border:1px solid var(--tracker-border);border-radius:16px;overflow:hidden}
-.conversion-report-body{padding:24px 26px}
-#conversion-report{display:block;resize:vertical;min-height:156px;line-height:1.65;font-family:inherit;font-size:18px;font-variant-numeric:tabular-nums;white-space:pre-wrap}
-.conversion-report-actions{display:flex;align-items:center;flex-wrap:wrap;gap:16px;margin-top:18px}
+.conversion-report-body{padding:0 24px 20px}
+#conversion-report{display:block;resize:vertical;min-height:124px;line-height:1.5;font-family:inherit;font-size:16px;font-variant-numeric:tabular-nums;white-space:pre-wrap}
+.conversion-report-actions{display:flex;align-items:center;flex-wrap:wrap;gap:12px;margin-top:12px}
 #copy-conversion-report:disabled{opacity:.5;cursor:not-allowed}
 #conversion-copy-status,#conversion-report-help{font-size:14px;color:var(--tracker-muted);line-height:1.6}
-#conversion-report-help{margin:16px 0 0}
-@media(max-width:420px){.conversion-report-body{padding:20px}}
+#conversion-report-help{margin:10px 0 0}
+@media(max-width:420px){.conversion-report-body{padding:0 20px 18px}}
+
+#conversion-form{padding:22px 24px 14px;gap:16px 18px}
+.conversion-error:empty{display:none}
+#conversion-form input{font-size:22px;padding:12px}
+#conversion-copy-status:empty{display:none}
