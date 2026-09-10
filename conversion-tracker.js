@@ -7,6 +7,15 @@ function calculate(chatsText, salesText) {
   if (chats === 0) return {chats,sales,rate:null,error:sales > 0 ? 'Enter at least one chat to calculate a conversion rate.' : ''};
   return {chats,sales,rate:sales / chats * 100,error:''};
 }
+function reportSlot(now = new Date()) {
+  const hour = Number(new Intl.DateTimeFormat('en-GB', { timeZone:'Europe/London', hour:'2-digit', hourCycle:'h23' }).format(now));
+  const slot = Math.floor(hour / 2) * 2;
+  return '@' + (slot % 12 || 12) + (slot >= 12 ? 'pm' : 'am');
+}
+function formatReport(result, now = new Date()) {
+  if(result.error) return '';
+  return reportSlot(now) + '\n' + result.chats + ' chats\n' + result.sales + ' Sales\nConversion: ' + (result.rate === null ? 'N/A' : result.rate.toFixed(2) + '%');
+}
 const sidebar=document.querySelector('.sidebar'),main=document.querySelector('.main-content');
 if(!sidebar||!main)return;
 const key='pitch-studio-conversion-totals-v1';
@@ -32,13 +41,51 @@ section.innerHTML=`
     <div class="conversion-formula">Sales ÷ chats × 100</div>
     <p class="conversion-explanation" id="conversion-explanation">Your rate updates as you type.</p>
   </div>
+</div>
+<div class="conversion-report-card">
+  <div class="panel-heading"><span class="step-number">02</span><div><h2>Your copyable update</h2><p>UK time · latest two-hour slot. Totals stay as entered.</p></div></div>
+  <div class="conversion-report-body">
+    <label for="conversion-report">Update preview</label>
+    <textarea id="conversion-report" rows="4" readonly spellcheck="false" aria-describedby="conversion-report-help"></textarea>
+    <div class="conversion-report-actions"><button type="button" id="copy-conversion-report">Copy update</button><span id="conversion-copy-status" role="status"></span></div>
+    <p id="conversion-report-help">The time changes automatically: @2pm, @4pm, @6pm… Your numbers update when you edit the totals.</p>
+  </div>
 </div>`;
 main.append(section);
 const chats=section.querySelector('#conversion-chats'),sales=section.querySelector('#conversion-sales'),error=section.querySelector('#conversion-error'),rate=section.querySelector('#conversion-rate'),summary=section.querySelector('#conversion-summary'),explanation=section.querySelector('#conversion-explanation'),storage=section.querySelector('#conversion-storage');
 try{const saved=JSON.parse(localStorage.getItem(key)||'null');if(saved&&Number.isSafeInteger(saved.chats)&&saved.chats>=0&&Number.isSafeInteger(saved.sales)&&saved.sales>=0){chats.value=saved.chats;sales.value=saved.sales;}}catch{storage.textContent='Browser saving is unavailable. Totals will last for this page session.';}
+const report=section.querySelector('#conversion-report'),copyReport=section.querySelector('#copy-conversion-report'),copyStatus=section.querySelector('#conversion-copy-status');
+let lastReport='',lastSlot='';
+function updateReport(result) {
+  const text=formatReport(result);
+  if(text!==lastReport){report.value=text;lastReport=text;copyStatus.textContent='';}
+  lastSlot=reportSlot();
+  copyReport.disabled=!!result.error;
+  report.placeholder=result.error || '';
+}
+copyReport.addEventListener('click',async()=>{
+  const result=calculate(chats.value,sales.value);
+  updateReport(result);
+  if(result.error)return;
+  const text=report.value;
+  try {
+    if(!navigator.clipboard?.writeText)throw Error('Clipboard unavailable');
+    await navigator.clipboard.writeText(text);
+    copyStatus.textContent=report.value===text?'Copied!':'Copied. The preview has since changed.';
+  } catch {
+    report.focus();report.select();
+    copyStatus.textContent='Text selected. Copy it with Ctrl+C, or your device’s Copy option.';
+  }
+});
+function refreshReportTime(){if(reportSlot()!==lastSlot)updateReport(calculate(chats.value,sales.value));}
+function scheduleReportClock(){setTimeout(()=>{refreshReportTime();scheduleReportClock();},60000-Date.now()%60000+50);}
+scheduleReportClock();
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)refreshReportTime();});
+window.addEventListener('focus',refreshReportTime);
 function update(persist) {
   const result=calculate(chats.value,sales.value);
   error.textContent=result.error;
+  updateReport(result);
   for(const input of [chats,sales])input.setAttribute('aria-invalid',String(input.value!==''&&(!Number.isSafeInteger(Number(input.value))||Number(input.value)<0)));
   rate.textContent=result.error||result.rate===null?'—':result.rate.toFixed(2)+'%';
   summary.textContent=result.error?'Check your totals above.':result.chats===0?'No chats recorded yet.':result.sales+' '+(result.sales===1?'sale':'sales')+' from '+result.chats+' '+(result.chats===1?'chat':'chats');
