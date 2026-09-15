@@ -34,7 +34,7 @@ Should I talk you through how to get a code?`
             { id: 'totalMonthly', type: 'text', label: 'Total Cost(£)' },
             { id: 'upfrontCost', type: 'text', label: 'Upfront Cost(£)' },
             { id: 'deviceCost', type: 'text', label: 'Device Cost(£)' },
-            { id: 'loanLength', type: 'dropdown', label: 'Loan Length', options: ['36 months', '24 months'] },
+            { id: 'loanLength', type: 'dropdown', label: 'Loan Length', options: ['36 months', '24 months', '48 months'] },
             { id: 'airtimeCost', type: 'text', label: 'Airtime Cost(£)' },
             { id: 'Roaming', type: 'dropdown', label: 'Roaming', options: ['', 'EU Roaming', 'Global Roaming'] },
             { id: 'Ent', type: 'dropdown', label: 'Entertainment', options: ['', 'Entertainment'] }
