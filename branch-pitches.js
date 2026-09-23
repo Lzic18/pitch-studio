@@ -14,12 +14,34 @@ const branchPitches = [
         insertAfter: 'Device Pitch',
         start: 'opener',
         nodes: {
+            threeLevelProtection: {
+    "label": "Pitch 2 – Three levels of cover",
+    "text": "Now we’ve found the device that’s right for you, we can also look at how you’d like to protect it\n\nWith phones being such an important part of everyday life, having the right protection in place can give you that extra peace of mind if something unexpected happens.\n\nI have three levels of cover available:\n\n• Loss, Theft & Damage Cover – £[protectionLoss] per month\n• Damage Cover – £[protectionDamage] per month\n• Screen Damage Cover – £[protectionScreen] per month\n\nWhich level of protection would you be most interested in for your new device?",
+    "fields": [
+        {
+            "id": "protectionLoss",
+            "label": "Loss, Theft & Damage Cover – monthly price (£)",
+            "placeholder": "X"
+        },
+        {
+            "id": "protectionDamage",
+            "label": "Damage Cover – monthly price (£)",
+            "placeholder": "X"
+        },
+        {
+            "id": "protectionScreen",
+            "label": "Screen Damage Cover – monthly price (£)",
+            "placeholder": "X"
+        }
+    ]
+},
             opener: {
                 label: 'Handset or SIMO',
                 text: `Handset(Upgrade/New) or SIMO(New)`,
                 branches: {
                     yes: { label: 'Handset', next: 'handsetinsurance' },
-                    no: { label: 'Simo', next: 'simoinsurance' }
+                    no: { label: 'Simo', next: 'simoinsurance' },
+                    alternative: { label: 'Pitch 2 – Three levels of cover', next: 'threeLevelProtection' }
                 }
             },
                         handsetinsurance: {
