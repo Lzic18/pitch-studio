@@ -253,6 +253,29 @@ We are not able to apply any further discounts to a plan that is already discoun
 ];
 
 
+templates.push({
+  "name": "Pricing schedule",
+  "description": "Enter each amount in pounds, including VAT. The schedule updates as you type.",
+  "fields": [
+    {
+      "id": "scheduleCurrentPrice",
+      "type": "text",
+      "label": "Current price (£, incl. VAT)"
+    },
+    {
+      "id": "scheduleApril2027",
+      "type": "text",
+      "label": "From 1 Apr 2027 – annual price increase (£)"
+    },
+    {
+      "id": "scheduleApril2028",
+      "type": "text",
+      "label": "From 1 Apr 2028 – annual price increase (£)"
+    }
+  ],
+  "baseText": "Pricing schedule\n\nIncl. VAT\nCurrent price:\n£[scheduleCurrentPrice]\n\nFrom 1 Apr 2027\nAnnual price increase\n£[scheduleApril2027]\n\nFrom 1 Apr 2028\nAnnual price increase\n£[scheduleApril2028]"
+});
+
 let currentTemplate = null;
 
 const sidebar = document.querySelector('.sidebar');
