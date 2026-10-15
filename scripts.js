@@ -200,24 +200,9 @@ We are not able to apply any further discounts to a plan that is already discoun
     },
     {
         name: 'Warning Messages(Are we connected)',
-        description: `Non Responder`,
-        fields: [
-            {
-                id: 'warningmes',
-                type: 'dropdown',
-                label: 'Non Responer',
-                options: ['Non Responder 7 mins', 'Non Responder 10 mins', 'Non Resolved 7 mins', 'Non Resolved 10 mins', 'Complete Query 7 mins', 'Complete Query 10 mins'],
-                valueMap: {
-                    'Non Responder 7 mins': 'We haven’t heard from you yet. Would you like to carry on chatting with me?',
-                    'Non Responder 10 mins': 'As I’ve not heard from you, Im closing this chat. Please feel free to connect with us again in case of any queries',
-                    'Non Resolved 7 mins': 'I’m awaiting your response to help you with your query. Are we still connected?',
-                    'Non Resolved 10 mins': 'As I haven’t heard from you, I’m closing this chat. Please feel free to connect with us again in case of any queries.',
-                    'Complete Query 7 mins': 'I’m awaiting your response to help you with your query. Are we still connected?',
-                    'Complete Query 10 mins': 'We’ve resolved your query, and since we’ve not heard from you, we’ve sent you a text message confirming the actions we’ve taken on your account today. Thank you for contacting Vodafone'
-                }
-            },
-        ],
-        baseText: `[warningmes]`
+        description: 'Copy this message to keep the chat connected.',
+        fields: [],
+        baseText: "Please can you pop a message in the chat to keep this connected, if I do not get a response in 7 minutes this chat will automatically close"
     },
     {
         name: 'Comm Tool',
