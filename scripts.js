@@ -261,6 +261,72 @@ templates.push({
   "baseText": "Pricing schedule\n\nIncl. VAT\nCurrent price:\n£[scheduleCurrentPrice]\n\nFrom 1 Apr 2027\nAnnual price increase\n£[scheduleApril2027]\n\nFrom 1 Apr 2028\nAnnual price increase\n£[scheduleApril2028]"
 });
 
+const devicePitchOptions = [templates.find(template => template.name === 'Device Pitch'), {
+  "name": "Device Pitch",
+  "description": "Full offer breakdown — fill in the details and copy your pitch.",
+  "fields": [
+    {
+      "id": "deviceModel",
+      "type": "text",
+      "label": "Device"
+    },
+    {
+      "id": "storageSize",
+      "type": "dropdown",
+      "label": "Storage",
+      "options": [
+        "128GB",
+        "256GB",
+        "512GB",
+        "1TB",
+        "2TB",
+        "64GB"
+      ]
+    },
+    {
+      "id": "deviceData",
+      "type": "text",
+      "label": "Data allowance (GB per month)"
+    },
+    {
+      "id": "loanLength",
+      "type": "dropdown",
+      "label": "Device loan length",
+      "options": [
+        "36 months",
+        "24 months",
+        "48 months"
+      ]
+    },
+    {
+      "id": "upfrontCost",
+      "type": "text",
+      "label": "Upfront cost (£)"
+    },
+    {
+      "id": "deviceCost",
+      "type": "text",
+      "label": "Monthly device cost (£)"
+    },
+    {
+      "id": "airtimeCost",
+      "type": "text",
+      "label": "Monthly data plan (£)"
+    },
+    {
+      "id": "totalMonthly",
+      "type": "text",
+      "label": "Total monthly cost (£)"
+    },
+    {
+      "id": "deviceExtraBenefits",
+      "type": "text",
+      "label": "Additional benefits"
+    }
+  ],
+  "baseText": "Great news! I’ve found a fantastic deal on a new device for you!\n\nHere’s a full breakdown of what I can offer you today!\n\nDevice: [deviceModel]\n\nStorage: [storageSize]\n\nData Allowance: [deviceData]GB per month\n\nDevice Loan Length: [loanLength]\n\nUpfront Cost: £[upfrontCost]\n\nMonthly Device Cost: £[deviceCost]\n\nMonthly Data Plan: £[airtimeCost]\n\nTotal Monthly Cost: £[totalMonthly]\n\nAdditional Benefits: [deviceExtraBenefits]\n\nWith this deal, you’ll be getting a fantastic new device alongside a data plan that suits your needs, giving you great value and flexibility!\n\nHow does this offer sound to you? Would you be happy to go ahead with this today?"
+}];
+const devicePitchDrafts = {};
 let currentTemplate = null;
 
 const sidebar = document.querySelector('.sidebar');
@@ -327,6 +393,7 @@ sidebarEntries.forEach(entry => {
 
 function renderTemplate(template) {
     if (!template) return;
+    currentTemplate = template;
 
     document.getElementById('welcome-content').style.display = 'none';
     document.getElementById('knowledge-base-section').style.display = 'none';
@@ -340,6 +407,40 @@ function renderTemplate(template) {
     templateTitle.textContent = template.name;
     templateDescription.textContent = template.description;
     pitchForm.innerHTML = '';
+
+    if (template.name === 'Device Pitch') {
+        const group = document.createElement('div');
+        group.className = 'pitch-field';
+        group.style.gridColumn = '1 / -1';
+        const label = document.createElement('label');
+        label.htmlFor = 'device-pitch-option';
+        label.textContent = 'Pitch option';
+        const select = document.createElement('select');
+        select.id = 'device-pitch-option';
+        ['Option 1 – Original pitch', 'Option 2 – Full offer breakdown'].forEach((name, i) => {
+            const option = document.createElement('option');
+            option.value = String(i);
+            option.textContent = name;
+            select.append(option);
+        });
+        select.value = String(Math.max(0, devicePitchOptions.indexOf(template)));
+        select.addEventListener('change', () => {
+            template.fields.forEach(field => {
+                devicePitchDrafts[field.id] = document.getElementById(field.id)?.value || '';
+            });
+            const next = devicePitchOptions[Number(select.value)];
+            renderTemplate(next);
+            next.fields.forEach(field => {
+                const value = devicePitchDrafts[field.id];
+                if (value !== undefined && (!field.options || field.options.includes(value))) {
+                    document.getElementById(field.id).value = value;
+                }
+            });
+            updatePreview();
+        });
+        group.append(label, select);
+        pitchForm.append(group);
+    }
 
     {
         template.fields.forEach(field => {
