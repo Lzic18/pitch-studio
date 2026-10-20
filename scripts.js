@@ -320,8 +320,10 @@ const devicePitchOptions = [templates.find(template => template.name === 'Device
     },
     {
       "id": "deviceExtraBenefits",
-      "type": "text",
-      "label": "Additional benefits"
+      "type": "dropdown",
+      "label": "Additional benefits",
+      "options": ["", "EU roaming", "Global roaming", "Entertainment"],
+      "emptyLabel": "None"
     }
   ],
   "baseText": "Great news! I’ve found a fantastic deal on a new device for you!\n\nHere’s a full breakdown of what I can offer you today!\n\nDevice: [deviceModel]\n\nStorage: [storageSize]\n\nData Allowance: [deviceData]GB per month\n\nDevice Loan Length: [loanLength]\n\nUpfront Cost: £[upfrontCost] + £6.99 delivery fee\n\nMonthly Device Cost: £[deviceCost]\n\nMonthly Data Plan: £[airtimeCost]\n\nTotal Monthly Cost: £[totalMonthly]\n\nAdditional Benefits: [deviceExtraBenefits]\n\nWith this deal, you’ll be getting a fantastic new device alongside a data plan that suits your needs, giving you great value and flexibility!\n\nHow does this offer sound to you? Would you be happy to go ahead with this today?"
@@ -459,7 +461,7 @@ function renderTemplate(template) {
                 field.options.forEach(option => {
                     const optionEl = document.createElement('option');
                     optionEl.value = option;
-                    optionEl.textContent = option;
+                    optionEl.textContent = option === '' && field.emptyLabel ? field.emptyLabel : option;
                     inputElement.appendChild(optionEl);
                 });
             
@@ -542,6 +544,9 @@ function updatePreview() {
     }
 
     let script = currentTemplate.baseText;
+    if (currentTemplate.fields.some(field => field.id === 'deviceExtraBenefits') && !document.getElementById('deviceExtraBenefits')?.value) {
+        script = script.replace('\n\nAdditional Benefits: [deviceExtraBenefits]', '');
+    }
     currentTemplate.fields.forEach(field => {
         const placeholder = `[${field.id}]`;
         let value = document.getElementById(field.id)?.value || '';
@@ -577,6 +582,9 @@ copyButton.addEventListener('click', () => {
     if (!currentTemplate) return;
 
     let script = currentTemplate.baseText;
+    if (currentTemplate.fields.some(field => field.id === 'deviceExtraBenefits') && !document.getElementById('deviceExtraBenefits')?.value) {
+        script = script.replace('\n\nAdditional Benefits: [deviceExtraBenefits]', '');
+    }
     currentTemplate.fields.forEach(field => {
         const placeholder = `[${field.id}]`;
         let value = document.getElementById(field.id)?.value || '';
