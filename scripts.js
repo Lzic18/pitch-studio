@@ -261,6 +261,13 @@ templates.push({
   "baseText": "Pricing schedule\n\nIncl. VAT\nCurrent price:\n£[scheduleCurrentPrice]\n\nFrom 1 Apr 2027\nAnnual price increase\n£[scheduleApril2027]\n\nFrom 1 Apr 2028\nAnnual price increase\n£[scheduleApril2028]"
 });
 
+// Seasonal offers — additional end-of-chat pitch, alongside the existing templates.
+templates.unshift({
+    name: 'BLACK FRDAY DEALS',
+    description: 'Black Friday end-of-chat offer: Apple iPad Air 11-inch (M4), 128GB. Copy the pitch for your customer.',
+    fields: [],
+    baseText: "Just before we finish up, I wanted to make you aware of a fantastic offer we currently have on the Apple iPad Air 11-inch (M4)!\n\nPowered by Apple's M4 chip, this tablet delivers incredible speed and performance, making it perfect for streaming your favourite shows, gaming, multitasking or even working on the go!\n\n- 11-inch Liquid Retina display for stunning picture quality.\n- Powerful M4 chip for smooth performance and effortless multitasking.\n- 128GB storage for your favourite apps, photos and videos.\n- 2-year warranty included at no extra cost!\n\nYou can get all of this for just £18 per month with £30 upfront, including a 1GB data plan!\n\nWould this be something you'd be interested in adding to your account today?\n\nOffer details: 48-month tablet plan and 24-month data plan. Total monthly cost rises to £20.50 on 1 April 2027 and £23 on 1 April 2028."
+});
 const devicePitchOptions = [templates.find(template => template.name === 'Device Pitch'), {
   "name": "Device Pitch",
   "description": "Full offer breakdown — fill in the details and copy your pitch.",
