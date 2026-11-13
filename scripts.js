@@ -261,12 +261,23 @@ templates.push({
   "baseText": "Pricing schedule\n\nIncl. VAT\nCurrent price:\n£[scheduleCurrentPrice]\n\nFrom 1 Apr 2027\nAnnual price increase\n£[scheduleApril2027]\n\nFrom 1 Apr 2028\nAnnual price increase\n£[scheduleApril2028]"
 });
 
-// Seasonal offers — additional end-of-chat pitch, alongside the existing templates.
+// Seasonal offers — choose a deal and copy the relevant end-of-chat pitch.
 templates.unshift({
     name: 'BLACK FRDAY DEALS',
-    description: 'Black Friday end-of-chat offer: Apple iPad Air 11-inch (M4), 128GB. Copy the pitch for your customer.',
-    fields: [],
-    baseText: "Just before we finish up, I wanted to make you aware of a fantastic offer we currently have on the Apple iPad Air 11-inch (M4)!\n\nPowered by Apple's M4 chip, this tablet delivers incredible speed and performance, making it perfect for streaming your favourite shows, gaming, multitasking or even working on the go!\n\n- 11-inch Liquid Retina display for stunning picture quality.\n- Powerful M4 chip for smooth performance and effortless multitasking.\n- 128GB storage for your favourite apps, photos and videos.\n- 2-year warranty included at no extra cost!\n\nYou can get all of this for just £18 per month with £30 upfront, including a 1GB data plan!\n\nWould this be something you'd be interested in adding to your account today?\n\nOffer details: 48-month tablet plan and 24-month data plan. Total monthly cost rises to £20.50 on 1 April 2027 and £23 on 1 April 2028."
+    description: 'Choose a Black Friday tablet offer below, then copy the ready-to-send pitch.',
+    fields: [
+        {
+            id: 'blackFridayTablet',
+            type: 'dropdown',
+            label: 'Select tablet deal',
+            options: ['Apple iPad Air 11-inch (M4)', 'Samsung Galaxy Tab A11+'],
+            valueMap: {
+                'Apple iPad Air 11-inch (M4)': "Just before we finish up, I wanted to make you aware of a fantastic offer we currently have on the Apple iPad Air 11-inch (M4)!\n\nPowered by Apple's M4 chip, this tablet delivers incredible speed and performance, making it perfect for streaming your favourite shows, gaming, multitasking or even working on the go!\n\n- 11-inch Liquid Retina display for stunning picture quality.\n- Powerful M4 chip for smooth performance and effortless multitasking.\n- 128GB storage for your favourite apps, photos and videos.\n- 2-year warranty included at no extra cost!\n\nYou can get all of this for just £18 per month with £30 upfront, including a 1GB data plan!\n\nWould this be something you'd be interested in adding to your account today?\n\nOffer details: 48-month tablet plan and 24-month data plan. Total monthly cost rises to £20.50 on 1 April 2027 and £23 on 1 April 2028.",
+                'Samsung Galaxy Tab A11+': "Just before we finish up, I wanted to make you aware of another fantastic tablet offer we currently have on the Samsung Galaxy Tab A11+!\n\nThis tablet offers fantastic performance and is perfect for streaming your favourite shows, browsing the internet, gaming, video calls or keeping the family entertained!\n\n- 11-inch WUXGA display for crisp, clear picture quality when watching videos or playing games.\n- Powerful 7,040mAh battery designed to keep you entertained throughout the day.\n- 128GB storage for your favourite apps, photos, videos and games.\n- Smooth multitasking, making it ideal for everyday use, whether at home or on the go.\n- 2-year warranty included at no extra cost!\n\nYou can get all of this for just £10 per month with only £10 upfront, including a 1GB data plan!\n\nWould this be something you'd be interested in adding to your account today?\n\nOffer details: 36-month tablet plan (£6/month) and 24-month data plan (£4/month). Total monthly cost rises to £12.50 on 1 April 2027 and £15 on 1 April 2028."
+            }
+        }
+    ],
+    baseText: '[blackFridayTablet]'
 });
 const devicePitchOptions = [templates.find(template => template.name === 'Device Pitch'), {
   "name": "Device Pitch",
